@@ -23,7 +23,7 @@ pipeline {
                     withSonarQubeEnv('sonarqube') {
                         sh """
                             ${scannerHome}/bin/sonar-scanner \
-                                -Dsonar.projectKey=ecommerce \
+                                -Dsonar.projectKey=snyk \
                                 -Dsonar.sources=. \
                                 -Dsonar.host.url=http://192.168.0.100:9000
                         """
