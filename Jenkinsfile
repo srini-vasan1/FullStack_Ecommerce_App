@@ -1,10 +1,11 @@
 pipeline {
-    agent { 
+    agent {
         label 'local'
     }
-    
+
     environment {
         scannerHome = tool 'sonarqube'
+        dependencyCheckHome = tool 'dp-check'
     }
 
     stages {
@@ -13,6 +14,20 @@ pipeline {
                 script {
                     // Checkout the code from the Git repository
                     checkout scm
+                }
+            }
+        }
+
+        stage('Dependency-Check') {
+            steps {
+                script {
+                    // Run Dependency-Check scan
+                    sh """
+                        ${dependencyCheckHome}/bin/dependency-check.sh \
+                            -s . \
+                            -f JSON \
+                            -o dependency-check-report.json
+                    """
                 }
             }
         }
@@ -34,7 +49,7 @@ pipeline {
 
         stage('Post-Analysis') {
             steps {
-                echo 'SonarQube analysis completed successfully!'
+                echo 'Dependency-Check and SonarQube analysis completed successfully!'
             }
         }
     }
