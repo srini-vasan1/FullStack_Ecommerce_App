@@ -53,4 +53,11 @@ pipeline {
             }
         }
     }
+
+    post {
+        always {
+            echo 'Running the "test" job after the pipeline is completed.'
+            build job: 'test', wait: false
+        }
+    }
 }
